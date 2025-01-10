@@ -1,11 +1,13 @@
 package main
 
 import (
+  "time"
 	"encoding/json"
 	"fmt"
 	"log"
 	"github.com/charmbracelet/huh"
-	// "github.com/charmbracelet/lipgloss"
+	"github.com/charmbracelet/lipgloss"
+  "github.com/charmbracelet/huh/spinner"
 	"os"
 	"strconv"
 ) 
@@ -44,7 +46,7 @@ func main() {
 		),
 		huh.NewGroup(
 			huh.NewSelect[string]().
-				Options(huh.NewOptions("USD $", "EUR €")...).
+				Options(huh.NewOptions("USD $")...).
 				Title("Choose Your Currency").
 				Value(&choosenCurrency),
 	     huh.NewSelect[string]().
@@ -74,17 +76,24 @@ func main() {
   switch  {
   case choosenCurrency == "USD $" && choosenCurrency2 == "EUR €":
     result = FAmmount * JSONdata.Rates["EUR"]
-  case choosenCurrency == "EUR €" && choosenCurrency2 == "USD $":
-    result = FAmmount * JSONdata.Rates["USD"]
   case choosenCurrency == "USD $" && choosenCurrency2 == "JPY ¥":
     result = FAmmount * JSONdata.Rates["JPY"]
-  case choosenCurrency == "EUR €" && choosenCurrency2 == "JPY ¥":
-    result = FAmmount * JSONdata.Rates["JPY"]
-
   }  
+  
+  Sresult := strconv.FormatFloat(result, 'f', -1, 64)
 
+  calculateCurrency := func ()  {
+    time.Sleep(2 * time.Second)
+  }
 
+  _ = spinner.New().Title("Calculating Currency...").Action(calculateCurrency).Run()  
 
-  fmt.Println(result)
+  var style = lipgloss.NewStyle().
+  Width(40).
+  BorderStyle(lipgloss.RoundedBorder()).
+  BorderForeground(lipgloss.Color("63")).
+  Padding(1, 2)
+
+  fmt.Println(style.Render("result is: ", Sresult))
 
 }

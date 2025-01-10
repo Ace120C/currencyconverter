@@ -44,7 +44,7 @@ func main() {
 		),
 		huh.NewGroup(
 			huh.NewSelect[string]().
-				Options(huh.NewOptions("USD $", "JPY ¥", "EUR €")...).
+				Options(huh.NewOptions("USD $", "EUR €")...).
 				Title("Choose Your Currency").
 				Value(&choosenCurrency),
 	     huh.NewSelect[string]().
@@ -74,6 +74,12 @@ func main() {
   switch  {
   case choosenCurrency == "USD $" && choosenCurrency2 == "EUR €":
     result = FAmmount * JSONdata.Rates["EUR"]
+  case choosenCurrency == "EUR €" && choosenCurrency2 == "USD $":
+    result = FAmmount * JSONdata.Rates["USD"]
+  case choosenCurrency == "USD $" && choosenCurrency2 == "JPY ¥":
+    result = FAmmount * JSONdata.Rates["JPY"]
+  case choosenCurrency == "EUR €" && choosenCurrency2 == "JPY ¥":
+    result = FAmmount * JSONdata.Rates["JPY"]
 
   }  
 

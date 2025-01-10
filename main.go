@@ -79,6 +79,10 @@ func main() {
   case choosenCurrency == "USD $" && choosenCurrency2 == "JPY ¥":
     result = FAmmount * JSONdata.Rates["JPY"]
   }  
+
+  if choosenCurrency == "USD $" && choosenCurrency2 == "USD $" {
+    panic("You can't convert a currency with the exact same one!")
+  }
   
   Sresult := strconv.FormatFloat(result, 'f', -1, 64)
 

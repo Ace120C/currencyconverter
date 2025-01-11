@@ -16,6 +16,7 @@ import (
 type Currencies struct {
   USRates map[string]float64 `json:"data"`
   EURates map[string]float64 `json:"EUdata"`
+  JPRates map[string]float64 `json:"JPdata"`
 }
 
 func main() {
@@ -47,7 +48,7 @@ func main() {
 		),
 		huh.NewGroup(
 			huh.NewSelect[string]().
-				Options(huh.NewOptions("USD $", "EUR €")...).
+				Options(huh.NewOptions("USD $", "EUR €", "JPY ¥")...).
 				Title("Choose Your Currency").
 				Value(&choosenCurrency),
 	     huh.NewSelect[string]().
@@ -83,12 +84,19 @@ func main() {
     result = FAmmount * JSONdata.EURates["USD"]
   case choosenCurrency == "EUR €" && choosenCurrency2 == "JPY ¥":
     result = FAmmount * JSONdata.EURates["JPY"]
+  case choosenCurrency == "JPY ¥" && choosenCurrency2 == "USD $":
+    result = FAmmount * JSONdata.JPRates["USD"]
+  case choosenCurrency == "JPY ¥" && choosenCurrency2 == "EUR €":
+    result = FAmmount * JSONdata.JPRates["EUR"]
   }  
 
   if choosenCurrency == "USD $" && choosenCurrency2 == "USD $" {
     panic("You can't convert a currency with the exact same one!")
   }
   if choosenCurrency == "EUR €" && choosenCurrency2 == "EUR €" {
+   panic("You can't convert a currency with the exact same one!") 
+  }
+  if choosenCurrency == "JPY ¥" && choosenCurrency2 == "JPY ¥" {
    panic("You can't convert a currency with the exact same one!") 
   }
   
